@@ -1,12 +1,15 @@
 $(function () {
+  // 点击去注册账号让 登录框隐藏，注册框显示
   $("#link_reg").click(() => {
     $(".login-box").hide();
     $(".reg-box").show();
   });
+  // 点击去登录让 注册框隐藏，登录框显示
   $("#link_login").click(() => {
     $(".login-box").show();
     $(".reg-box").hide();
   });
+
   // 从 LayUI 中获取 form 对象
   const form = layui.form;
 
@@ -24,10 +27,11 @@ $(function () {
       if (pwd !== val) return "两次密码不一致";
     },
   });
+
   // 获取 layui 弹窗
   const layer = layui.layer;
   // 设置请求根路径
-  //   const baseUrl = "http://www.liulongbin.top:3007";
+  const baseUrl = "http://www.liulongbin.top:3007";
 
   // 监听注册表单，发送注册请求
   $("#form_reg").on("submit", (e) => {
@@ -47,6 +51,7 @@ $(function () {
       },
     });
   });
+
   // 监听登录表单，发送登录请求
   $("#form_login").submit((e) => {
     e.preventDefault();
@@ -55,7 +60,7 @@ $(function () {
       url: "/api/login",
       data: $("#form_login").serialize(),
       success: (res) => {
-        if (res.status !== 0) return layer.msg("登陆失败"); //layer.msg是layui里的弹窗方法
+        if (res.status !== 0) return layer.msg(res.message);
         layer.msg("登录成功！");
         // 将登录成功得到的 token 字符串，保存到 localStorage 中
         localStorage.setItem("token", res.token);
